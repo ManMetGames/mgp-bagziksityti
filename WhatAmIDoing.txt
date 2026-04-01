@@ -1,0 +1,6 @@
+I want to create a rhythm type game with "perfect timing" "good timing" "ok timing"
+Make events in enemy's animation, and get the perfect timing related to that.
+Actor component with enums to handle perfect window
+Enum TimingAction
+Enum TimingResult
+

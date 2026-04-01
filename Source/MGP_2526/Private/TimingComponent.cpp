@@ -12,7 +12,7 @@ UTimingComponent::UTimingComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 	bIsActive = false;
 
-	
+	//deafult timing windows
 	Window.PerfectStart = 0.2f;
 	Window.PerfectEnd = 0.3f;
 
@@ -43,6 +43,8 @@ void UTimingComponent::StartTimingWindow(ETimingAction ActionType)
 
 ETimingResult UTimingComponent::EvaluateTiming()
 {
+    if (!GetWorld())
+        return ETimingResult::Miss;
     if (!bIsActive)
         return ETimingResult::Miss;
 

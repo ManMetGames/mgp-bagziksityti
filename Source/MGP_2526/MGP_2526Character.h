@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "TimingComponent.h"
 #include "MGP_2526Character.generated.h"
 
 class USpringArmComponent;
@@ -22,7 +23,7 @@ UCLASS(abstract)
 class AMGP_2526Character : public ACharacter
 {
 	GENERATED_BODY()
-
+	void OnParryPressed();
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
@@ -49,8 +50,12 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MouseLookAction;
 
-public:
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* ParryAction;
 
+public:
+	UPROPERTY(VisibleAnywhere)
+	UTimingComponent* TimingComponent;
 	/** Constructor */
 	AMGP_2526Character();	
 

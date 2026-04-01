@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "TimingComponent.h"
 #include "Enemy.generated.h"
 
+
+class TimingComponent;
 UCLASS()
 class MGP_2526_API AEnemy : public ACharacter
 {
@@ -20,6 +23,15 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	UPROPERTY()
+	AActor* Player;
+
+	// Attack
+	void Attack();
+
+	// Timing system
+	UPROPERTY(VisibleAnywhere)
+	UTimingComponent* TimingComponent;
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
