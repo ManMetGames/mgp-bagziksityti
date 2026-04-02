@@ -4,6 +4,7 @@
 #include "Enemy.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Animation/AnimInstance.h"
 #include "TimingComponent.h"
 
 // Sets default values
@@ -12,6 +13,9 @@ AEnemy::AEnemy()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	TimingComponent = CreateDefaultSubobject<UTimingComponent>(TEXT("TimingComponent"));
+	LastAttackTime = -10.0f;
+	AttackCooldown = 2.0f;
+	bIsAttacking = false;
 
 }
 
@@ -29,22 +33,22 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
 	if (!Player) return;
 
 	// Move toward player
 	FVector Direction = (Player->GetActorLocation() - GetActorLocation()).GetSafeNormal();
-
 	AddMovementInput(Direction, 1.0f);
 
-	// Distance check
 	float Distance = FVector::Dist(Player->GetActorLocation(), GetActorLocation());
+	float TimeNow = GetWorld()->GetTimeSeconds();
 
-	if (Distance < 200.0f)
+	if (!bIsAttacking && Distance < 200.0f && TimeNow - LastAttackTime > AttackCooldown)
 	{
 		Attack();
+		LastAttackTime = TimeNow;
+		bIsAttacking = true;
 	}
-
 }
 
 // Called to bind functionality to input
@@ -55,11 +59,13 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 }
 void AEnemy::Attack()
 {
-	if (!TimingComponent) return;
+	if (!GetMesh()) return;
 
-	// TEMP: trigger timing window manually
-	TimingComponent->StartTimingWindow(ETimingAction::Parry);
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (!AnimInstance) return;
+	AnimInstance->Montage_Play(AttackMontage);
 
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Enemy Attack!"));
+	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Enemy Attack Animation"));
+
 }
 

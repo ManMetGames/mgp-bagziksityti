@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "TimingComponent.h"
+#include "Animation/AnimMontage.h"
 #include "Enemy.generated.h"
 
 
@@ -23,8 +24,14 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* AttackMontage;
 	UPROPERTY()
 	AActor* Player;
+
+	float LastAttackTime;
+	float AttackCooldown;
+	bool bIsAttacking;
 
 	// Attack
 	void Attack();
