@@ -13,6 +13,8 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 
 	AActor* Owner = MeshComp->GetOwner();
 	if (!Owner || Owner->HasAnyFlags(RF_ClassDefaultObject)) return;
+	UWorld* World = MeshComp->GetWorld();
+	if (!World || !World->IsGameWorld()) return;
 
 	AEnemy* Enemy = Cast<AEnemy>(Owner);
 
