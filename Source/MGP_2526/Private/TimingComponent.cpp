@@ -7,8 +7,6 @@
 // Sets default values for this component's properties
 UTimingComponent::UTimingComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false;
 	bIsActive = false;
 
@@ -22,7 +20,7 @@ UTimingComponent::UTimingComponent()
 	Window.OkStart = 0.0f;
 	Window.OkEnd = 0.5f;
 
-	// ...
+	
 }
 
 
@@ -31,7 +29,7 @@ void UTimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	
 	
 }
 void UTimingComponent::StartTimingWindow(ETimingAction ActionType)
@@ -45,10 +43,20 @@ ETimingResult UTimingComponent::EvaluateTiming()
 {
     if (!GetWorld())
         return ETimingResult::Miss;
+
     if (!bIsActive)
         return ETimingResult::Miss;
 
     float CurrentTime = GetWorld()->GetTimeSeconds() - StartTime;
+    GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::White,
+        FString::Printf(TEXT("Time: %f"), CurrentTime));
+
+    // Window expired
+    if (CurrentTime > Window.OkEnd)
+    {
+        bIsActive = false;
+        return ETimingResult::Miss;
+    }
 
     if (CurrentTime >= Window.PerfectStart && CurrentTime <= Window.PerfectEnd)
     {
@@ -68,7 +76,5 @@ ETimingResult UTimingComponent::EvaluateTiming()
         return ETimingResult::Ok;
     }
 
-    bIsActive = false;
     return ETimingResult::Miss;
 }
-

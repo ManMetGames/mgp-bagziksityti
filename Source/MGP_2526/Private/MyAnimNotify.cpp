@@ -9,21 +9,34 @@
 
 void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
 {
-    if (!MeshComp) return;
-    AActor* Owner = MeshComp->GetOwner();
-    if (!Owner || Owner->HasAnyFlags(RF_ClassDefaultObject)) return;
+	if (!MeshComp) return;
 
-    // --- The Fix ---
-    AEnemy* Enemy = Cast<AEnemy>(Owner);
-    if (Enemy)
-    {
-        Enemy->bIsAttacking = false;
-    }
-    // ----------------
+	AActor* Owner = MeshComp->GetOwner();
+	if (!Owner || Owner->HasAnyFlags(RF_ClassDefaultObject)) return;
 
-    UTimingComponent* TimingComp = Owner->FindComponentByClass<UTimingComponent>();
-    if (TimingComp)
-    {
-        TimingComp->StartTimingWindow(ETimingAction::Parry);
-    }
+	AEnemy* Enemy = Cast<AEnemy>(Owner);
+
+	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+	if (!PlayerPawn) return;
+
+	UTimingComponent* TimingComp = PlayerPawn->FindComponentByClass<UTimingComponent>();
+
+	switch (NotifyType)
+	{
+	case ENotifyType::StartWindow:
+		if (TimingComp)
+		{
+			TimingComp->StartTimingWindow(ETimingAction::Parry);
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Blue, TEXT("Timing Window START"));
+		}
+		break;
+
+	case ENotifyType::EndAttack:
+		if (Enemy)
+		{
+			Enemy->bIsAttacking = false;
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Attack End"));
+		}
+		break;
+	}
 }

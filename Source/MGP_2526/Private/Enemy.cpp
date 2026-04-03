@@ -49,6 +49,11 @@ void AEnemy::Tick(float DeltaTime)
 		LastAttackTime = TimeNow;
 		bIsAttacking = true;
 	}
+	else if (bIsAttacking)
+	{
+		
+		GEngine->AddOnScreenDebugMessage(1, 0.1f, FColor::Yellow, TEXT("Waiting for Notify to reset bIsAttacking..."));
+	}
 }
 
 // Called to bind functionality to input

@@ -6,6 +6,12 @@
 #include "Animation/AnimNotifies/AnimNotify.h"
 #include "MyAnimNotify.generated.h"
 
+UENUM(BlueprintType)
+enum class ENotifyType : uint8
+{
+	StartWindow,
+	EndAttack
+};
 UCLASS()
 class MGP_2526_API UMyAnimNotify : public UAnimNotify
 {
@@ -13,4 +19,6 @@ class MGP_2526_API UMyAnimNotify : public UAnimNotify
 
 public:
 	virtual void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ENotifyType NotifyType;
 };
