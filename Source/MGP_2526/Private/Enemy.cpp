@@ -57,6 +57,8 @@ void AEnemy::Tick(float DeltaTime)
 	float Distance = FVector::Dist(Player->GetActorLocation(), GetActorLocation());
 	float TimeNow = GetWorld()->GetTimeSeconds();
 
+	
+
 	if (!bIsAttacking && Distance < 200.0f && TimeNow - LastAttackTime > AttackCooldown)
 	{
 		Attack();

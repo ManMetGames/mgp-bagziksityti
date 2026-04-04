@@ -11,16 +11,20 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 {
 	if (!MeshComp) return;
 
-	AActor* Owner = MeshComp->GetOwner();
-	if (!Owner || Owner->HasAnyFlags(RF_ClassDefaultObject)) return;
-
-	// editor crashed when opening blueprint editor for Enemy, so added check for game world
+	// editor crashed when i opened animation blueprint, have to check if world is three
 	UWorld* World = MeshComp->GetWorld();
 	if (!World || !World->IsGameWorld()) return;
 
-	AEnemy* Enemy = Cast<AEnemy>(Owner);
+	AActor* Owner = MeshComp->GetOwner();
+	if (!Owner || Owner->HasAnyFlags(RF_ClassDefaultObject)) return;
 
-	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
+	AEnemy* Enemy = Cast<AEnemy>(Owner);
+	if (!Enemy) return;
+
+	APlayerController* PC = World->GetFirstPlayerController();
+	if (!PC) return;
+
+	APawn* PlayerPawn = PC->GetPawn();
 	if (!PlayerPawn) return;
 
 	UTimingComponent* TimingComp = PlayerPawn->FindComponentByClass<UTimingComponent>();

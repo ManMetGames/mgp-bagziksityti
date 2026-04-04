@@ -26,15 +26,20 @@ protected:
 public:	
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimMontage* AttackMontage;
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* RunMontage;
+
 	UPROPERTY()
 	AActor* Player;
 
 	float LastAttackTime;
 	float AttackCooldown;
 	bool bIsAttacking;
+	
 
 	// Attack
 	void Attack();
+	
 
 	// Timing system
 	UPROPERTY(VisibleAnywhere)
