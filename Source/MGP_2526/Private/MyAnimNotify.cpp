@@ -13,6 +13,8 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 
 	AActor* Owner = MeshComp->GetOwner();
 	if (!Owner || Owner->HasAnyFlags(RF_ClassDefaultObject)) return;
+
+	// editor crashed when opening blueprint editor for Enemy, so added check for game world
 	UWorld* World = MeshComp->GetWorld();
 	if (!World || !World->IsGameWorld()) return;
 

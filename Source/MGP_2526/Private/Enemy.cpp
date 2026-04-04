@@ -12,6 +12,8 @@ AEnemy::AEnemy()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	GetCharacterMovement()->bOrientRotationToMovement = false;
+	bUseControllerRotationYaw = true;
 	TimingComponent = CreateDefaultSubobject<UTimingComponent>(TEXT("TimingComponent"));
 	LastAttackTime = -10.0f;
 	AttackCooldown = 2.0f;
@@ -33,10 +35,22 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 	if (!Player) return;
 
-	// Move toward player
+	//calculate the direction to the player
+	FVector TargetLocation = Player->GetActorLocation();
+	FVector SelfLocation = GetActorLocation();
+	FVector TargetDirection = (TargetLocation - SelfLocation).GetSafeNormal();
+
+	
+	FRotator TargetRotation = TargetDirection.Rotation();
+	TargetRotation.Pitch = 0.f;
+	TargetRotation.Roll = 0.f;
+
+	FRotator SmoothRotation = FMath::RInterpTo(GetActorRotation(), TargetRotation, DeltaTime, 5.f);
+	SetActorRotation(SmoothRotation);
+
+	
 	FVector Direction = (Player->GetActorLocation() - GetActorLocation()).GetSafeNormal();
 	AddMovementInput(Direction, 1.0f);
 
