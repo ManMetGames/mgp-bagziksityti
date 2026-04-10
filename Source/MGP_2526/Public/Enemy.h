@@ -26,8 +26,7 @@ protected:
 public:	
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimMontage* AttackMontage;
-	UPROPERTY(EditAnywhere, Category = "Animation")
-	UAnimMontage* RunMontage;
+
 
 	UPROPERTY()
 	AActor* Player;
