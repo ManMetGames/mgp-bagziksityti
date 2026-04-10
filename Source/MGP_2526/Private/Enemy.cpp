@@ -25,6 +25,7 @@ AEnemy::AEnemy()
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+	if (GetWorld())
 	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
 	
@@ -35,7 +36,7 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (!Player) return;
+	if (!GetWorld() || !Player) return;
 
 	//calculate the direction to the player
 	FVector TargetLocation = Player->GetActorLocation();
