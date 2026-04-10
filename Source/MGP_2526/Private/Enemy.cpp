@@ -86,7 +86,6 @@ void AEnemy::Attack()
 	if (!AnimInstance) return;
 	AnimInstance->Montage_Play(AttackMontage);
 
-	GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, TEXT("Enemy Attack Animation"));
 
 }
 

@@ -35,7 +35,6 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 		if (TimingComp)
 		{
 			TimingComp->StartTimingWindow(ETimingAction::Parry);
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Blue, TEXT("Timing Window START"));
 		}
 		break;
 
@@ -43,7 +42,7 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 		if (Enemy)
 		{
 			Enemy->bIsAttacking = false;
-			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Attack End"));
+			
 		}
 		break;
 	}
