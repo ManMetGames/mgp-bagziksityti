@@ -61,6 +61,12 @@ public:
 	bool bCanParry = false;
 	bool bHasTriedParry = false;
 	bool bParryPressedThisWindow = false;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	float MaxHealth = 100.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
+	float CurrentHealth = 100.f;
+
 
 protected:
 

@@ -20,13 +20,13 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 	if (!Owner || Owner->IsPendingKillPending()) return;
 
 	AEnemy* Enemy = Cast<AEnemy>(Owner);
-	if (!Enemy) return;
+	if (!IsValid(Enemy)) return;
 
 	APlayerController* PC = World->GetFirstPlayerController();
 	if (!PC) return;
 
 	APawn* PlayerPawn = PC->GetPawn();
-	if (!PlayerPawn) return;
+	if (!IsValid(PlayerPawn)) return;
 
 	UTimingComponent* TimingComp = PlayerPawn->FindComponentByClass<UTimingComponent>();
 

@@ -49,6 +49,7 @@ AMGP_2526Character::AMGP_2526Character()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 	TimingComponent = CreateDefaultSubobject<UTimingComponent>(TEXT("TimingComponent"));
+	CurrentHealth = MaxHealth;
 }
 
 void AMGP_2526Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -136,6 +137,7 @@ void AMGP_2526Character::DoJumpEnd()
 	// signal the character to stop jumping
 	StopJumping();
 }
+
 void AMGP_2526Character::OnParryPressed()
 {
 	if (!TimingComponent || !TimingComponent->bIsActive || bParryPressedThisWindow)
@@ -161,6 +163,7 @@ void AMGP_2526Character::OnParryPressed()
 
 	case ETimingResult::Miss:
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Miss"));
+		
 		break;
 	}
 }

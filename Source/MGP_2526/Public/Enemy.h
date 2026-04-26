@@ -26,6 +26,11 @@ protected:
 public:	
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimMontage* AttackMontage;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	float MaxHealth = 100.f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
+	float CurrentHealth = 100.f;
 
 
 	UPROPERTY()

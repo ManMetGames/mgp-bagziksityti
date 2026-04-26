@@ -18,6 +18,7 @@ AEnemy::AEnemy()
 	LastAttackTime = -10.0f;
 	AttackCooldown = 2.0f;
 	bIsAttacking = false;
+	CurrentHealth = MaxHealth;
 
 }
 
@@ -89,4 +90,5 @@ void AEnemy::Attack()
 
 
 }
+
 
