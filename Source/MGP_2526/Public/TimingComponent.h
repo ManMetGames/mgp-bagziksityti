@@ -58,6 +58,7 @@ public:
 	UTimingComponent();
 	void StartTimingWindow(ETimingAction ActionType);
 	ETimingResult EvaluateTiming();
+	bool bIsActive;
 
 protected:
 	// Called when the game starts
@@ -65,7 +66,7 @@ protected:
 
 private:
 	float StartTime;
-	bool bIsActive;
+	
 
 	ETimingAction CurrentAction;
 

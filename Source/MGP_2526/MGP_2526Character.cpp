@@ -138,7 +138,10 @@ void AMGP_2526Character::DoJumpEnd()
 }
 void AMGP_2526Character::OnParryPressed()
 {
-	if (!TimingComponent) return;
+	if (!TimingComponent || !TimingComponent->bIsActive || bParryPressedThisWindow)
+		return;
+
+	bParryPressedThisWindow = true;
 
 	ETimingResult Result = TimingComponent->EvaluateTiming();
 

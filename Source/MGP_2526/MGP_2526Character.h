@@ -57,7 +57,10 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	UTimingComponent* TimingComponent;
 	/** Constructor */
-	AMGP_2526Character();	
+	AMGP_2526Character();
+	bool bCanParry = false;
+	bool bHasTriedParry = false;
+	bool bParryPressedThisWindow = false;
 
 protected:
 

@@ -5,6 +5,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/Actor.h"
 #include "Enemy.h"
+#include "MGP_2526Character.h"
 #include "TimingComponent.h"
 
 void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
@@ -35,6 +36,13 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 		if (TimingComp)
 		{
 			TimingComp->StartTimingWindow(ETimingAction::Parry);
+
+			// reset attempt lock
+			AMGP_2526Character* PlayerChar = Cast<AMGP_2526Character>(PlayerPawn);
+			if (PlayerChar)
+			{
+				PlayerChar->bParryPressedThisWindow = false;
+			}
 		}
 		break;
 
@@ -43,6 +51,10 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 		{
 			Enemy->bIsAttacking = false;
 			
+		}
+		if (TimingComp)
+		{
+			TimingComp->bIsActive = false;
 		}
 		break;
 	}

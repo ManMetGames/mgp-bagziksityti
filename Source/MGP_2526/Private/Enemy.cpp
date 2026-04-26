@@ -69,7 +69,7 @@ void AEnemy::Tick(float DeltaTime)
 	else if (bIsAttacking)
 	{
 		
-		GEngine->AddOnScreenDebugMessage(1, 0.1f, FColor::Yellow, TEXT("Waiting for Notify to reset bIsAttacking..."));
+		UE_LOG(LogTemp, Display, TEXT("notify resetting boolean bisAttacking"));
 	}
 }
 
