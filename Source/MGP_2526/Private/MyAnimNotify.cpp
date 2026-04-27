@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Enemy.h"
 #include "MGP_2526Character.h"
+#include "Templates/Casts.h"
 #include "TimingComponent.h"
 
 void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation)
@@ -15,7 +16,7 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 	// editor crashed when i opened animation blueprint, have to check if world is three
 	UWorld* World = MeshComp->GetWorld();
 	if (!World || !World->IsGameWorld()) return;
-
+	// DEFAULT OBJECT PROBLEMS 
 	AActor* Owner = MeshComp->GetOwner();
 	if (!Owner || Owner->IsPendingKillPending()) return;
 
@@ -23,8 +24,8 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 	if (!IsValid(Enemy)) return;
 
 	APlayerController* PC = World->GetFirstPlayerController();
-	if (!PC) return;
-
+	if (!IsValid(PC)) return;
+	/// default object CRASH problems
 	APawn* PlayerPawn = PC->GetPawn();
 	if (!IsValid(PlayerPawn)) return;
 

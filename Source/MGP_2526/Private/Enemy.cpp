@@ -44,7 +44,7 @@ void AEnemy::Tick(float DeltaTime)
 	FVector SelfLocation = GetActorLocation();
 	FVector TargetDirection = (TargetLocation - SelfLocation).GetSafeNormal();
 
-	
+	// rotation for animation
 	FRotator TargetRotation = TargetDirection.Rotation();
 	TargetRotation.Pitch = 0.f;
 	TargetRotation.Roll = 0.f;
