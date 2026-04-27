@@ -10,7 +10,8 @@ UENUM(BlueprintType)
 enum class ENotifyType : uint8
 {
 	StartWindow,
-	EndAttack
+	EndAttack,
+	ApplyDamage
 };
 UCLASS()
 class MGP_2526_API UMyAnimNotify : public UAnimNotify

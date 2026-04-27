@@ -61,11 +61,13 @@ public:
 	bool bCanParry = false;
 	bool bHasTriedParry = false;
 	bool bParryPressedThisWindow = false;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
-	float MaxHealth = 100.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Stats")
+	float Health = 100.0f;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Health")
-	float CurrentHealth = 100.f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Stats")
+	float MaxHealth = 100.0f;
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	void TakeDamage(float dmg);
 
 
 protected:

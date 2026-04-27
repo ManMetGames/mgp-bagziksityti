@@ -70,7 +70,7 @@ void AEnemy::Tick(float DeltaTime)
 	else if (bIsAttacking)
 	{
 		
-		UE_LOG(LogTemp, Display, TEXT("notify resetting boolean bisAttacking"));
+		//UE_LOG(LogTemp, Display, TEXT("notify resetting boolean bisAttacking"));
 	}
 }
 

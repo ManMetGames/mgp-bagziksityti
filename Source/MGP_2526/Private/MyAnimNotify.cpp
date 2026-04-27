@@ -47,6 +47,7 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 		}
 		break;
 
+
 	case ENotifyType::EndAttack:
 		if (Enemy)
 		{
@@ -56,6 +57,16 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 		if (TimingComp)
 		{
 			TimingComp->bIsActive = false;
+		}
+		break;
+
+	case ENotifyType::ApplyDamage:
+		AMGP_2526Character* PlayerChar = Cast<AMGP_2526Character>(PlayerPawn);
+		if (PlayerChar)
+		{
+			
+			PlayerChar->TakeDamage(10.f);  // Apply 10 damage to the player
+			UE_LOG(LogTemp, Warning, TEXT("Notify hit! Player Health is now: %f"), PlayerChar->Health);
 		}
 		break;
 	}
