@@ -49,6 +49,7 @@ AMGP_2526Character::AMGP_2526Character()
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 	TimingComponent = CreateDefaultSubobject<UTimingComponent>(TEXT("TimingComponent"));
+
 	
 }
 
@@ -145,9 +146,12 @@ void AMGP_2526Character::OnParryPressed()
 
 	bParryPressedThisWindow = true;
 
-	ETimingResult Result = TimingComponent->EvaluateTiming();
 
-	switch (Result)
+
+	ParryResult = TimingComponent->EvaluateTiming();
+	bParryResult = true;
+
+	/*switch (ParryResult)
 	{
 	case ETimingResult::Perfect:
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Perfect"));
@@ -165,15 +169,39 @@ void AMGP_2526Character::OnParryPressed()
 		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Miss"));
 		
 		break;
-	}
+	}*/
 }
 
-void AMGP_2526Character::TakeDamage(float dmg)
+void AMGP_2526Character::HitDamage(float dmg)
 {
-	Health -= dmg;
-	if (Health <= 0.0f)
+	float FinalDamage = dmg;
+
+	if (bParryResult)
 	{
-		Health = 0.0f;
-		
+		switch (ParryResult)
+		{
+		case ETimingResult::Perfect:
+			FinalDamage = 0.0f;
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Perfect"));
+			break;
+
+		case ETimingResult::Good:
+			FinalDamage = dmg * 0.25f;
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Good"));	
+			break;
+
+		case ETimingResult::Ok:
+			FinalDamage = dmg * 0.75f;
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("Ok"));
+			break;
+
+		default:
+			break;
+		}
 	}
+
+	Health = FMath::Clamp(Health - FinalDamage, 0.0f, MaxHealth);
+
+	bParryPressedThisWindow = false;
+	bParryResult = false;
 }

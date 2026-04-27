@@ -67,7 +67,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Stats")
 	float MaxHealth = 100.0f;
 	UFUNCTION(BlueprintCallable, Category = "Player Stats")
-	void TakeDamage(float dmg);
+	void HitDamage(float dmg);
+
 
 
 protected:
@@ -82,6 +83,8 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+	ETimingResult ParryResult = ETimingResult::Miss;
+	bool bParryResult = false;
 
 public:
 

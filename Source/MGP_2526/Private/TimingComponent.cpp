@@ -14,11 +14,11 @@ UTimingComponent::UTimingComponent()
 	Window.PerfectStart = 0.2f;
 	Window.PerfectEnd = 0.3f;
 
-	Window.GoodStart = 0.1f;
-	Window.GoodEnd = 0.4f;
+	Window.GoodStart = 0.15f;
+	Window.GoodEnd = 0.35f;
 
 	Window.OkStart = 0.0f;
-	Window.OkEnd = 0.5f;
+	Window.OkEnd = 0.45f;
 
 	
 }
@@ -52,29 +52,30 @@ ETimingResult UTimingComponent::EvaluateTiming()
         FString::Printf(TEXT("Time: %f"), CurrentTime));
 
     // Window expired
-    if (CurrentTime > Window.OkEnd)
-    {
-        bIsActive = false;
-        return ETimingResult::Miss;
-    }
+    if (CurrentTime < Window.OkStart || CurrentTime > Window.OkEnd)
+	{
+		bIsActive = false;
+		return ETimingResult::Miss;
+	}
 
-    if (CurrentTime >= Window.PerfectStart && CurrentTime <= Window.PerfectEnd)
-    {
-        bIsActive = false;
-        return ETimingResult::Perfect;
-    }
 
-    if (CurrentTime >= Window.GoodStart && CurrentTime <= Window.GoodEnd)
-    {
-        bIsActive = false;
-        return ETimingResult::Good;
-    }
+	if (CurrentTime >= Window.PerfectStart && CurrentTime <= Window.PerfectEnd)
+	{
+		bIsActive = false;
+		return ETimingResult::Perfect;
+	}
 
-    if (CurrentTime >= Window.OkStart && CurrentTime <= Window.OkEnd)
-    {
-        bIsActive = false;
-        return ETimingResult::Ok;
-    }
+	if (CurrentTime >= Window.GoodStart && CurrentTime <= Window.GoodEnd)
+	{
+		bIsActive = false;
+		return ETimingResult::Good;
+	}
+	if (CurrentTime >= Window.OkStart && CurrentTime <= Window.OkEnd)
+	{
+		bIsActive = false;
+		return ETimingResult::Ok;
+	}
 
-    return ETimingResult::Miss;
+	bIsActive = false;
+	return ETimingResult::Miss;
 }
