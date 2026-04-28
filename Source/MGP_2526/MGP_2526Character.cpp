@@ -193,9 +193,10 @@ void AMGP_2526Character::HitDamage(float dmg)
 			FinalDamage = dmg * 0.75f;
 			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("Ok"));
 			break;
-
-		default:
+		case ETimingResult::Miss:
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Miss"));
 			break;
+		
 		}
 	}
 
