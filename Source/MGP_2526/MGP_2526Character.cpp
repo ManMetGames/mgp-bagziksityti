@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Animation/AnimInstance.h"
 #include "MGP_2526.h"
 
 AMGP_2526Character::AMGP_2526Character()
@@ -145,11 +146,9 @@ void AMGP_2526Character::OnParryPressed()
 		return;
 
 	bParryPressedThisWindow = true;
-
-
-
 	ParryResult = TimingComponent->EvaluateTiming();
 	bParryResult = true;
+	Defending();
 
 	/*switch (ParryResult)
 	{
@@ -204,4 +203,14 @@ void AMGP_2526Character::HitDamage(float dmg)
 
 	bParryPressedThisWindow = false;
 	bParryResult = false;
+}
+void AMGP_2526Character::Defending()
+{
+	if (!GetMesh()) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (!AnimInstance) return;
+	AnimInstance->Montage_Play(DefendMontage);
+
+
 }

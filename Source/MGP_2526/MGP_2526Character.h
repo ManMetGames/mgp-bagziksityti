@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "TimingComponent.h"
+#include "Animation/AnimMontage.h"
 #include "MGP_2526Character.generated.h"
 
 class USpringArmComponent;
@@ -103,6 +104,10 @@ public:
 	/** Handles jump pressed inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* DefendMontage;
+
+	void Defending();
 
 public:
 
