@@ -6,6 +6,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Animation/AnimInstance.h"
 #include "TimingComponent.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -14,6 +15,11 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 	GetCharacterMovement()->bOrientRotationToMovement = false;
 	bUseControllerRotationYaw = true;
+	CombatCollider = CreateDefaultSubobject<USphereComponent>(TEXT("CombatCollider"));
+	CombatCollider->SetupAttachment(GetMesh(), TEXT("HandSocket"));
+	CombatCollider->SetSphereRadius(50.f);
+	CombatCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	CombatCollider->ComponentTags.Add(FName("EnemyAttack"));
 	TimingComponent = CreateDefaultSubobject<UTimingComponent>(TEXT("TimingComponent"));
 	LastAttackTime = -10.0f;
 	AttackCooldown = 2.0f;
@@ -37,8 +43,9 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	GreenCollider();
 	if (!GetWorld() || !Player) return;
-
+	
 	//calculate the direction to the player
 	FVector TargetLocation = Player->GetActorLocation();
 	FVector SelfLocation = GetActorLocation();
@@ -90,5 +97,50 @@ void AEnemy::Attack()
 
 
 }
+void AEnemy::SetCombatColliderActive(bool bIsEnabled)
+{
+	if (!CombatCollider) return;
+	if (bIsEnabled)
+	{
+		CombatCollider->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	}
+	else
+	{
+		CombatCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		bIsAttacking = false;
+	}
+}
+void AEnemy::GreenCollider()
+{
+	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	if (!PlayerPawn) return;
+	UTimingComponent* PlayerTiming = PlayerPawn->FindComponentByClass<UTimingComponent>();
+	if (!PlayerTiming)
+		return;
+	if (!PlayerTiming->bIsActive)
+	{
+		bPerfectWindowTriggered = false;
+		return;
+	}
+	if (PlayerTiming->IsInPerfectWindow() && !bPerfectWindowTriggered)
+	{
+		bPerfectWindowTriggered = true;
+		GEngine->AddOnScreenDebugMessage(2, 0.1f, FColor::Green, TEXT("SUCCESS: In Perfect Window!"));
+		DrawDebugSphere(GetWorld(), CombatCollider->GetComponentLocation(), 100.f, 12, FColor::Green, false, 0.1f, 0, 10.f);
+	}
+	
+	
 
+	/*if (TimingComponent && TimingComponent->IsInPerfectWindow())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("!!! PERFECT WINDOW ACTIVE - DRAWING SPHERE !!!"));
+		CombatCollider->SetSphereRadius(75.f);
+		DrawDebugSphere(GetWorld(), CombatCollider->GetComponentLocation(),
+			CombatCollider->GetScaledSphereRadius(), 12, FColor::Green, false, 0.05f, 0, 15.0f);
+	}
+	else
+		{
+		CombatCollider->SetSphereRadius(50.f);
+	}*/
 
+}

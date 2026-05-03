@@ -24,6 +24,13 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CombatCollider")
+	class USphereComponent* CombatCollider;
+	UFUNCTION(BlueprintCallable, Category = "Combat")
+	void SetCombatColliderActive(bool bIsEnabled);
+	void GreenCollider();
+
 	UPROPERTY(EditAnywhere, Category = "Animation")
 	UAnimMontage* AttackMontage;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
@@ -39,6 +46,7 @@ public:
 	float LastAttackTime;
 	float AttackCooldown;
 	bool bIsAttacking;
+	bool bPerfectWindowTriggered = false;
 	
 
 	// Attack

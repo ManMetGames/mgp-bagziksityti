@@ -59,6 +59,7 @@ public:
 	void StartTimingWindow(ETimingAction ActionType);
 	ETimingResult EvaluateTiming();
 	bool bIsActive;
+	bool IsInPerfectWindow() const;
 
 protected:
 	// Called when the game starts
@@ -72,5 +73,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	FTimingWindow Window;
+
 		
 };

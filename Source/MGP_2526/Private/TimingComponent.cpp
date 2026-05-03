@@ -79,3 +79,12 @@ ETimingResult UTimingComponent::EvaluateTiming()
 	bIsActive = false;
 	return ETimingResult::Miss;
 }
+
+bool UTimingComponent::IsInPerfectWindow() const
+{
+	if (!GetWorld() || !bIsActive)
+		return false;
+	
+	float CurrentTime = GetWorld()->GetTimeSeconds() - StartTime;
+	return CurrentTime >= Window.PerfectStart && CurrentTime <= Window.PerfectEnd;
+}
