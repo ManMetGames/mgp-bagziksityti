@@ -125,8 +125,7 @@ void AEnemy::GreenCollider()
 	if (PlayerTiming->IsInPerfectWindow() && !bPerfectWindowTriggered)
 	{
 		bPerfectWindowTriggered = true;
-		GEngine->AddOnScreenDebugMessage(2, 0.1f, FColor::Green, TEXT("SUCCESS: In Perfect Window!"));
-		DrawDebugSphere(GetWorld(), CombatCollider->GetComponentLocation(), 100.f, 12, FColor::Green, false, 0.1f, 0, 10.f);
+		DrawDebugSphere(GetWorld(), CombatCollider->GetComponentLocation(), sphereRadius, 12, FColor::Green, false, 0.1f, 0, 10.f);
 	}
 	
 	

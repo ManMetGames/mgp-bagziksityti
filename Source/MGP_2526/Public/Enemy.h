@@ -27,6 +27,8 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CombatCollider")
 	class USphereComponent* CombatCollider;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "CombatCollider")
+	float sphereRadius = 50.f;
 	UFUNCTION(BlueprintCallable, Category = "Combat")
 	void SetCombatColliderActive(bool bIsEnabled);
 	void GreenCollider();
