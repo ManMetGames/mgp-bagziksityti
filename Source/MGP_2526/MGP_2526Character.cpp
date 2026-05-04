@@ -198,6 +198,7 @@ void AMGP_2526Character::HitDamage(float dmg)
 			break;
 		
 		}
+
 	}
 
 	Health = FMath::Clamp(Health - FinalDamage, 0.0f, MaxHealth);

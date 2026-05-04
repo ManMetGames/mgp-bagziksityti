@@ -55,6 +55,7 @@ ETimingResult UTimingComponent::EvaluateTiming()
     if (CurrentTime < Window.OkStart || CurrentTime > Window.OkEnd)
 	{
 		bIsActive = false;
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Miss"));
 		return ETimingResult::Miss;
 	}
 

@@ -11,19 +11,19 @@ enum class ETimingAction : uint8
 {
 	None,
 	Parry,
-	Block,
+	Dash,
 	SpecialAttack
 };
 
 UENUM(BlueprintType)
 enum class ETimingResult : uint8
 {
-	None,
 	Ok,
 	Good,
 	Perfect,
 	Miss
 };
+// data container for timing windows, editable in the editor for easy tweaking
 USTRUCT(BlueprintType)
 struct FTimingWindow
 {
@@ -59,7 +59,7 @@ public:
 	void StartTimingWindow(ETimingAction ActionType);
 	ETimingResult EvaluateTiming();
 	bool bIsActive;
-	bool IsInPerfectWindow() const;
+	bool IsInPerfectWindow() const;  //const, because it just checks the timing, doesn't modify anything
 
 protected:
 	// Called when the game starts

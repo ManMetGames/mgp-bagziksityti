@@ -21,7 +21,7 @@ AEnemy::AEnemy()
 	CombatCollider->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	CombatCollider->ComponentTags.Add(FName("EnemyAttack"));
 	TimingComponent = CreateDefaultSubobject<UTimingComponent>(TEXT("TimingComponent"));
-	LastAttackTime = -10.0f;
+	LastAttackTime = -10.0f;     //so enemy can attack immediately at the start of the game
 	AttackCooldown = 2.0f;
 	bIsAttacking = false;
 	CurrentHealth = MaxHealth;
@@ -49,25 +49,27 @@ void AEnemy::Tick(float DeltaTime)
 	//calculate the direction to the player
 	FVector TargetLocation = Player->GetActorLocation();
 	FVector SelfLocation = GetActorLocation();
+	//normal vektor
 	FVector TargetDirection = (TargetLocation - SelfLocation).GetSafeNormal();
 
 	// rotation for animation
 	FRotator TargetRotation = TargetDirection.Rotation();
-	TargetRotation.Pitch = 0.f;
-	TargetRotation.Roll = 0.f;
+	// lock pitch and roll to prevent tilting 
+	TargetRotation.Pitch = 0.f; // Y axis rotation 
+	TargetRotation.Roll = 0.f;  // X axis rotation 
 
+	//RInterp for shortest path from current rotation to target rotation, 5.f is the speed of rotation 
 	FRotator SmoothRotation = FMath::RInterpTo(GetActorRotation(), TargetRotation, DeltaTime, 5.f);
 	SetActorRotation(SmoothRotation);
 
 	
 	FVector Direction = (Player->GetActorLocation() - GetActorLocation()).GetSafeNormal();
+	// Add movement input in the direction of the player with a scale of 1.0f (full speed)
 	AddMovementInput(Direction, 1.0f);
 
 	float Distance = FVector::Dist(Player->GetActorLocation(), GetActorLocation());
 	float TimeNow = GetWorld()->GetTimeSeconds();
-
 	
-
 	if (!bIsAttacking && Distance < 200.0f && TimeNow - LastAttackTime > AttackCooldown)
 	{
 		Attack();
