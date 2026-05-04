@@ -9,7 +9,7 @@
 #include "Enemy.generated.h"
 
 
-class TimingComponent;
+class UTimingComponent;
 UCLASS()
 class MGP_2526_API AEnemy : public ACharacter
 {
