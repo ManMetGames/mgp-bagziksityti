@@ -92,7 +92,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::Attack()
 {
 	if (!GetMesh()) return;
-
+	// Play the attack montage that i made from anim instance
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (!AnimInstance) return;
 	AnimInstance->Montage_Play(AttackMontage);
@@ -114,11 +114,14 @@ void AEnemy::SetCombatColliderActive(bool bIsEnabled)
 }
 void AEnemy::GreenCollider()
 {
+	// Get the player's timing component to check if the perfect window is active
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	if (!PlayerPawn) return;
 	UTimingComponent* PlayerTiming = PlayerPawn->FindComponentByClass<UTimingComponent>();
 	if (!PlayerTiming)
 		return;
+	//bisActive is set true in anim notify
+	// if the timing component isn't active, reset the perfect window trigger that way the sphere won't be drawn when the timing window isn't active, and also reset it for the next time the timing window is active
 	if (!PlayerTiming->bIsActive)
 	{
 		bPerfectWindowTriggered = false;

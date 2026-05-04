@@ -10,7 +10,7 @@ UTimingComponent::UTimingComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 	bIsActive = false;
 
-	//deafult timing windows
+	//deafult timing windows from struct
 	Window.PerfectStart = 0.2f;
 	Window.PerfectEnd = 0.3f;
 
@@ -34,6 +34,7 @@ void UTimingComponent::BeginPlay()
 }
 void UTimingComponent::StartTimingWindow(ETimingAction ActionType)
 {
+	//current action is set in anim notify, expandable for different actions with different windows if needed
 	CurrentAction = ActionType;
 	StartTime = GetWorld()->GetTimeSeconds();
 	bIsActive = true;
@@ -51,7 +52,7 @@ ETimingResult UTimingComponent::EvaluateTiming()
     GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::White,
         FString::Printf(TEXT("Time: %f"), CurrentTime));
 
-    // Window expired
+    // returning TimingResult based on which window the current time falls into
     if (CurrentTime < Window.OkStart || CurrentTime > Window.OkEnd)
 	{
 		bIsActive = false;

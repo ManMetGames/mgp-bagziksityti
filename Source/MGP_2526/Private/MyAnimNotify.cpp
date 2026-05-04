@@ -36,12 +36,14 @@ void UMyAnimNotify::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* 
 	case ENotifyType::StartWindow:
 		if (TimingComp)
 		{
+			// timing window with a timing action from timing component enum (setting bIsActive to true)
 			TimingComp->StartTimingWindow(ETimingAction::Parry);
 
 			// reset attempt lock
 			AMGP_2526Character* PlayerChar = Cast<AMGP_2526Character>(PlayerPawn);
 			if (PlayerChar)
 			{
+				// new attack, reset parry attempt lock 
 				PlayerChar->bParryPressedThisWindow = false;
 			}
 		}

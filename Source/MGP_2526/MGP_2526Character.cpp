@@ -142,12 +142,15 @@ void AMGP_2526Character::DoJumpEnd()
 
 void AMGP_2526Character::OnParryPressed()
 {
+	// if the timing component isn't active, or if the player has already pressed parry in this window, do nothing
 	if (!TimingComponent || !TimingComponent->bIsActive || bParryPressedThisWindow)
 		return;
-
+	// pressing parry in this window, evaluate the timing and get the result
 	bParryPressedThisWindow = true;
 	ParryResult = TimingComponent->EvaluateTiming();
+	// set bParryResult to true so i can evaluate the result in HitDamage
 	bParryResult = true;
+	//animation for parry
 	Defending();
 
 	/*switch (ParryResult)
