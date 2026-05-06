@@ -4,3 +4,5 @@ Actor component with enums to handle perfect window
 Enum TimingAction
 Enum TimingResult
 
+Start the timer when parry happens for perfectAttack by player
+(red collider on enemy + heltbar)
