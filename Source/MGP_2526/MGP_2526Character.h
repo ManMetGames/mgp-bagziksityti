@@ -63,6 +63,7 @@ public:
 	bool bCanParry = false;
 	bool bHasTriedParry = false;
 	bool bParryPressedThisWindow = false;
+	// for healthbar, in healthbar widget, cast mgp character to get these variables, divide health by max health to get percentage for progress bar (get health, get max health) 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Stats")
 	float Health = 100.0f;
 

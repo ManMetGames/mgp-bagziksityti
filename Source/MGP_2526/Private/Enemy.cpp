@@ -130,7 +130,7 @@ void AEnemy::GreenCollider()
 	if (PlayerTiming->IsInPerfectWindow() && !bPerfectWindowTriggered)
 	{
 		bPerfectWindowTriggered = true;
-		DrawDebugSphere(GetWorld(), CombatCollider->GetComponentLocation(), sphereRadius, 12, FColor::Green, false, 0.1f, 0, 10.f);
+		DrawDebugSphere(GetWorld(), CombatCollider->GetComponentLocation(), sphereRadius, 12, FColor::Green, false, 0.1f, 0, 10.f);   // 0.1f is the duration of perfect window (magic number for now)
 	}
 	
 	
