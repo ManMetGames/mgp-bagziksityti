@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Animation/AnimInstance.h"
 #include "MGP_2526.h"
 
 AMGP_2526Character::AMGP_2526Character()
@@ -48,6 +49,9 @@ AMGP_2526Character::AMGP_2526Character()
 
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+	TimingComponent = CreateDefaultSubobject<UTimingComponent>(TEXT("TimingComponent"));
+
+	
 }
 
 void AMGP_2526Character::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -65,11 +69,15 @@ void AMGP_2526Character::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AMGP_2526Character::Look);
+
+		// Parrying
+		EnhancedInputComponent->BindAction(ParryAction, ETriggerEvent::Started, this, &AMGP_2526Character::OnParryPressed);
 	}
 	else
 	{
 		UE_LOG(LogMGP_2526, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
 	}
+	
 }
 
 void AMGP_2526Character::Move(const FInputActionValue& Value)
@@ -130,4 +138,84 @@ void AMGP_2526Character::DoJumpEnd()
 {
 	// signal the character to stop jumping
 	StopJumping();
+}
+
+void AMGP_2526Character::OnParryPressed()
+{
+	// if the timing component isn't active, or if the player has already pressed parry in this window, do nothing
+	if (!TimingComponent || !TimingComponent->bIsActive || bParryPressedThisWindow)
+		return;
+	// pressing parry in this window, evaluate the timing and get the result
+	bParryPressedThisWindow = true;
+	ParryResult = TimingComponent->EvaluateTiming();
+	// set bParryResult to true so i can evaluate the result in HitDamage
+	bParryResult = true;
+	//animation for parry
+	Defending();
+
+	/*switch (ParryResult)
+	{
+	case ETimingResult::Perfect:
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Perfect"));
+		break;
+
+	case ETimingResult::Good:
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Good"));
+		break;
+
+	case ETimingResult::Ok:
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("Ok"));
+		break;
+
+	case ETimingResult::Miss:
+		GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, TEXT("Miss"));
+		
+		break;
+	}*/
+}
+
+void AMGP_2526Character::HitDamage(float dmg)
+{
+	float FinalDamage = dmg;
+
+	if (bParryResult)
+	{
+		switch (ParryResult)
+		{
+		case ETimingResult::Perfect:
+			FinalDamage = 0.0f;
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, TEXT("Perfect"));
+			break;
+
+		case ETimingResult::Good:
+			FinalDamage = dmg * 0.25f;
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Yellow, TEXT("Good"));	
+			break;
+
+		case ETimingResult::Ok:
+			FinalDamage = dmg * 0.75f;
+			GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Orange, TEXT("Ok"));
+			break;
+		case ETimingResult::Miss:
+			
+			break;
+		
+		}
+
+	}
+
+	Health = FMath::Clamp(Health - FinalDamage, 0.0f, MaxHealth);
+
+	bParryPressedThisWindow = false;
+	bParryResult = false;
+}
+void AMGP_2526Character::Defending()
+{
+	if (!GetMesh()) return;
+
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (!AnimInstance) return;
+	AnimInstance->Montage_Play(DefendMontage);
+
+
 }

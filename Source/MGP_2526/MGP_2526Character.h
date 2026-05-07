@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
+#include "TimingComponent.h"
+#include "Animation/AnimMontage.h"
 #include "MGP_2526Character.generated.h"
 
 class USpringArmComponent;
@@ -22,7 +24,8 @@ UCLASS(abstract)
 class AMGP_2526Character : public ACharacter
 {
 	GENERATED_BODY()
-
+	
+	void OnParryPressed();
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
@@ -49,10 +52,27 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MouseLookAction;
 
-public:
+	UPROPERTY(EditAnywhere, Category ="Input")
+	UInputAction* ParryAction;
 
+public:
+	UPROPERTY(VisibleAnywhere)
+	UTimingComponent* TimingComponent;
 	/** Constructor */
-	AMGP_2526Character();	
+	AMGP_2526Character();
+	bool bCanParry = false;
+	bool bHasTriedParry = false;
+	bool bParryPressedThisWindow = false;
+	// for healthbar, in healthbar widget, cast mgp character to get these variables, divide health by max health to get percentage for progress bar (get health, get max health) 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Stats")
+	float Health = 100.0f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Player Stats")
+	float MaxHealth = 100.0f;
+	UFUNCTION(BlueprintCallable, Category = "Player Stats")
+	void HitDamage(float dmg);
+
+
 
 protected:
 
@@ -66,6 +86,8 @@ protected:
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+	ETimingResult ParryResult = ETimingResult::Miss;
+	bool bParryResult = false;
 
 public:
 
@@ -84,6 +106,10 @@ public:
 	/** Handles jump pressed inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UAnimMontage* DefendMontage;
+
+	void Defending();
 
 public:
 
